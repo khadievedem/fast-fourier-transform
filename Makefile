@@ -6,7 +6,7 @@ OUT=main.o
 
 
 all: main.c
-	$(CC) $(CFLAGS) $(SRC) -o $(OUT)
+	$(CC) $(CFLAGS) $(SRC) -o $(OUT) -lm
 
 PHONY: clean
 
