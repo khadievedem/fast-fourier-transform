@@ -56,7 +56,7 @@ int8_t ddft(double complex *dest, double complex *x, uint16_t k, uint16_t N)
 }
 
 
-int32_t main(int argc, char *argv[])
+int8_t _main()
 {
   uint32_t i, j, N, k;
   double tmp;
@@ -95,6 +95,10 @@ int32_t main(int argc, char *argv[])
   }
   putnl();
 
+  /* Print the initial array on the screen */
+  for(i = 0; i < N; ++i)
+    printf("%f + i%f\n", creal(x[i]), cimag(x[i]));
+
   /* Initialize X array */
   for (i = 0; i < k; ++i)
     X[i] = 0;
@@ -103,8 +107,15 @@ int32_t main(int argc, char *argv[])
   ddft(X, x, N, k);
 
   /* Print result array on the screen */
+  puts("Result:");
   for(i = 0; i < k; ++i)
     printf("%f + i%f\n", creal(X[i]), cimag(X[i]));
 
   return 0;
+}
+
+
+int32_t main(int argc, char *argv[])
+{
+  return _main();
 }
