@@ -8,65 +8,81 @@
   #define  M_PI  3.1415926535897932384626433
 #endif
 
-/* 
- * This function will change the values inside X
+/******************************************************
+ * ddft -- Computes the Discrete Fourier Transform
  *
- * */
-void ddft(double complex *X, double complex x[], uint16_t N, uint16_t k)
+ * Parameters
+ *    dest -- The pointer to the array for the result
+ *    x    -- The pointer to the sequence of N numbers
+ *    k    -- Length of the transformed axis of the output (Size of the *dest array).
+ *    N    -- Size of the *x array
+ *
+ * Returns
+ *    result code:
+ *      0    -- For success
+ *     -1    -- Something got failed
+ *
+ * Notes
+ *    this function will change values inside the *src
+ ******************************************************/
+int8_t ddft(double complex *dest, double complex *x, uint16_t k, uint16_t N)
 {
+  /* Output array should be >= initial array */
+  if (k < N) return -1;
+  if (dest == NULL || x == NULL) return -1;
+
   int32_t i, j;
   double complex res_dft[k], v_exp;
 
-  for (i = 0; i < k; ++i) {
+  for (i = 0; i < k; ++i)
     res_dft[i] = 0;
-  }
 
   for(j = 0; j < k; ++j) {
     for (i = 0; i < N; ++i) {
-      /* 
-       * printf("[%d] %f * exp((-I * 2 * PI * %d * %d) / N)\n", j, creal(x[i]), j, i);
-       */
+      /* Compute the principal Nth root of unity */
       v_exp = cexp((-I * 2 * M_PI * j * i) / N);
-      
-      printf("TEST: i%f + %f\n", creal(v_exp), cimag(v_exp));
 
       res_dft[j] += x[i] * v_exp;
-      /* double complex test = exp((-I * 2 * M_PI * j * i) / N); */
     }
-    printf("= i%f + %f\n", creal(res_dft[j]), cimag(res_dft[j]));
   }
 
-  for(i = 0; i < k; ++i) {
-    X[i] = res_dft[i];
-  }
+  /* Copy the result to the destination array */
+  for(i = 0; i < k; ++i)
+    dest[i] = res_dft[i];
+
+  return 0;
 }
 
 
 
 int32_t main(int argc, char *argv[])
 {
-  int32_t i = 0, j = 0;
-  double complex *X;
-  uint16_t N = 8, k = 8;
+  uint32_t i, j, N, k;
 
-  double complex x[] = {1 , -1, 1, -1, 5, 4, 3, 2};
+  printf("Enter size of an Fourier coeffs: ");
+  scanf("%d %d", &N, &k);
+  printf("\n");
 
-  X = malloc(sizeof(X) * k);
+  double complex x[N], X[k];
 
-  /* printf("%f + i%f", creal(a), cimag(a)); */
-
-  for(i = 0; i < N; ++i) {
-    printf("%f\n", creal(x[i]));
+  for (i = 0; i < k; ++i) {
+    X[i] = 0;
   }
 
+  /* printf("%f + i%f", creal(a), cimag(a));
+
+   for(i = 0; i < N; ++i) {
+     printf("%f\n", creal(x[i]));
+   }
+  */
+
   ddft(X, x, N, k);
+
   printf("------\n");
 
   for(i = 0; i < k; ++i) {
     printf("%f + i%f\n", creal(X[i]), cimag(X[i]));
   }
-
-  free(X);
 
   return 0;
 }
