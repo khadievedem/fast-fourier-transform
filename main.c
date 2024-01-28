@@ -8,6 +8,8 @@
   #define  M_PI  3.1415926535897932384626433
 #endif
 
+#define putnl() putc('\n', stdout)
+
 /******************************************************
  * ddft -- Computes the Discrete Fourier Transform
  *
@@ -54,35 +56,55 @@ int8_t ddft(double complex *dest, double complex *x, uint16_t k, uint16_t N)
 }
 
 
-
 int32_t main(int argc, char *argv[])
 {
   uint32_t i, j, N, k;
+  double tmp;
 
-  printf("Enter size of an Fourier coeffs: ");
-  scanf("%d %d", &N, &k);
-  printf("\n");
+  /* Input the number of Fourier coeffs */
+  printf("Enter the number of Fourier coeffs: ");
+  scanf("%d", &N);
+  putnl();
+  if (N < 1) return -1;
+
+  /* Input the size of output Fourier series */
+  printf("Enter size of the final Fourier series: ");
+  scanf("%d", &k);
+  putnl();
+  if (k < N) return -1;
 
   double complex x[N], X[k];
 
-  for (i = 0; i < k; ++i) {
-    X[i] = 0;
+  /* Input an array of Fourier coeffs */
+  printf("Enter %d Fourier coeffs:\n", N);
+  for (i = 0; i < N; ++i)
+  {
+    x[i] = 0;
+
+    /* Scan the real part */
+    printf("[%d] Real part: ", i + 1);
+    scanf("%lf", &tmp);
+    putnl();
+    x[i] += tmp;
+
+    /* Scan the imagine part */
+    printf("[%d] Imagine part: ", i + 1);
+    scanf("%lf", &tmp);
+    putnl();
+    x[i] += tmp * I;
   }
+  putnl();
 
-  /* printf("%f + i%f", creal(a), cimag(a));
+  /* Initialize X array */
+  for (i = 0; i < k; ++i)
+    X[i] = 0;
 
-   for(i = 0; i < N; ++i) {
-     printf("%f\n", creal(x[i]));
-   }
-  */
-
+  /* Compute the DFT */
   ddft(X, x, N, k);
 
-  printf("------\n");
-
-  for(i = 0; i < k; ++i) {
+  /* Print result array on the screen */
+  for(i = 0; i < k; ++i)
     printf("%f + i%f\n", creal(X[i]), cimag(X[i]));
-  }
 
   return 0;
 }
