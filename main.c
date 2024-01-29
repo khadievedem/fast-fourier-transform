@@ -4,11 +4,13 @@
 #include <stdint.h>
 #include <stdio.h>
 
+
 #ifndef  M_PI
-  #define  M_PI  3.1415926535897932384626433
+  #define M_PI 3.1415926535897932384626433
 #endif
 
 #define putnl() putc('\n', stdout)
+
 
 /******************************************************
  * ddft -- Computes the Discrete Fourier Transform
@@ -36,10 +38,9 @@ int8_t ddft(double complex *dest, double complex *x, uint16_t k, uint16_t N)
   int32_t i, j;
   double complex res_dft[k], v_exp;
 
-  for (i = 0; i < k; ++i)
-    res_dft[i] = 0;
-
   for(j = 0; j < k; ++j) {
+    res_dft[j] = 0;
+
     for (i = 0; i < N; ++i) {
       /* Compute the principal Nth root of unity */
       v_exp = cexp((-I * 2 * M_PI * j * i) / N);
@@ -63,14 +64,12 @@ int8_t _main()
 
   /* Input the number of Fourier coeffs */
   printf("Enter the number of Fourier coeffs: ");
-  scanf("%d", &N);
-  putnl();
+  scanf("%d", &N); putnl();
   if (N < 1) return -1;
 
   /* Input the size of output Fourier series */
   printf("Enter size of the final Fourier series: ");
-  scanf("%d", &k);
-  putnl();
+  scanf("%d", &k); putnl();
   if (k < N) return -1;
 
   double complex x[N], X[k];
@@ -83,14 +82,12 @@ int8_t _main()
 
     /* Scan the real part */
     printf("[%d] Real part: ", i + 1);
-    scanf("%lf", &tmp);
-    putnl();
+    scanf("%lf", &tmp); putnl();
     x[i] += tmp;
 
     /* Scan the imagine part */
     printf("[%d] Imagine part: ", i + 1);
-    scanf("%lf", &tmp);
-    putnl();
+    scanf("%lf", &tmp); putnl();
     x[i] += tmp * I;
   }
   putnl();
