@@ -1,12 +1,14 @@
 CC=gcc
 STD=c89
-CFLAGS=-std=$(STD)
+
+CFLAGS=-std=$(STD) -lm -O2
+
 SRC=main.c
 OUT=main.o
 
 
 all: main.c
-	$(CC) $(CFLAGS) $(SRC) -o $(OUT) -lm
+	$(CC) $(CFLAGS) $(SRC) -o $(OUT)
 
 PHONY: clean
 
