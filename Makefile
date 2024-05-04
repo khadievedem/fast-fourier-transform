@@ -3,7 +3,7 @@ STD=c89
 
 CFLAGS=-std=$(STD) -lm -O2
 
-SRC=main.c
+SRC=main.c fourier.c
 OUT=main.o
 
 
